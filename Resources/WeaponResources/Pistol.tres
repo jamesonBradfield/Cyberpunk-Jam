@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="WeaponResource" load_steps=7 format=3 uid="uid://b6w140dc70h31"]
+
+[ext_resource type="Resource" uid="uid://djoneigts34cj" path="res://Resources/Feedbacks/Activate_Feedback.tres" id="1_di8m7"]
+[ext_resource type="Resource" uid="uid://clka464tbngdj" path="res://Resources/DamageResources/PistolBasic.tres" id="2_o51ja"]
+[ext_resource type="Resource" uid="uid://cx0mi2cma5mt5" path="res://Resources/Feedbacks/Reload_Feedback.tres" id="3_tc1q0"]
+[ext_resource type="Resource" uid="uid://c6ja8871q6oe" path="res://Resources/Feedbacks/Shooting_feedback.tres" id="4_hmt3p"]
+[ext_resource type="ArrayMesh" uid="uid://dm62dp4uvnbdj" path="res://Models/pistol.obj" id="5_y8qm2"]
+[ext_resource type="Script" path="res://Scripts/WeaponResource.cs" id="6_cprbt"]
+
+[resource]
+script = ExtResource("6_cprbt")
+WeaponName = &"Pistol"
+WeaponMesh = ExtResource("5_y8qm2")
+Position = Vector3(0.483828, -0.14883, -0.747167)
+Rotation = Vector3(0, 0, 0)
+GunMuzzle = Vector3(0, 0.0325817, -0.186126)
+Damage = [ExtResource("2_o51ja"), ExtResource("2_o51ja"), ExtResource("2_o51ja"), ExtResource("2_o51ja"), ExtResource("2_o51ja"), ExtResource("2_o51ja"), ExtResource("2_o51ja"), ExtResource("2_o51ja")]
+IsSemiAuto = true
+SprayRandomness = Vector2(0, 0)
+ReloadFeedback = ExtResource("3_tc1q0")
+ShootingFeedback = ExtResource("4_hmt3p")
+ActivateFeedback = ExtResource("1_di8m7")

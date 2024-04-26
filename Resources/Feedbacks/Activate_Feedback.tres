@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="Feedback" load_steps=3 format=3 uid="uid://djoneigts34cj"]
+
+[ext_resource type="AudioStream" uid="uid://cgbi4ejvu8l2b" path="res://PlaceholderSfx/377145__nioczkus__pistol-draw-unholster.ogg" id="1_7ow0w"]
+[ext_resource type="Script" path="res://addons/Lambast/Feedback.cs" id="2_q8gum"]
+
+[resource]
+script = ExtResource("2_q8gum")
+Sound = ExtResource("1_7ow0w")
+AnimName = null

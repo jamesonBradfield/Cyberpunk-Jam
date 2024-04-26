@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="Feedback" load_steps=3 format=3 uid="uid://c6ja8871q6oe"]
+
+[ext_resource type="AudioStream" uid="uid://c5nsodo3ctv1n" path="res://PlaceholderSfx/163456__lemudcrab__pistol-shot(LeMudCrab freesound).ogg" id="1_ll6l4"]
+[ext_resource type="Script" path="res://addons/Lambast/Feedback.cs" id="2_wmic2"]
+
+[resource]
+script = ExtResource("2_wmic2")
+Sound = ExtResource("1_ll6l4")
+AnimName = null

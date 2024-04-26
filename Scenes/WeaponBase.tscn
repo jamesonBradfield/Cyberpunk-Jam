@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=3 uid="uid://dgaw0lt7asypb"]
+
+[ext_resource type="Script" path="res://Scripts/Weapon.cs" id="1_rwmbp"]
+[ext_resource type="Resource" uid="uid://b6w140dc70h31" path="res://Resources/WeaponResources/Pistol.tres" id="2_akkkd"]
+[ext_resource type="ArrayMesh" uid="uid://dm62dp4uvnbdj" path="res://Models/pistol.obj" id="3_saxmr"]
+[ext_resource type="AudioStream" uid="uid://cgbi4ejvu8l2b" path="res://PlaceholderSfx/377145__nioczkus__pistol-draw-unholster.ogg" id="4_1uulv"]
+[ext_resource type="Script" path="res://addons/Lambast/DamageRay.cs" id="5_6kllw"]
+
+[node name="WeaponBase" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.483828, -0.14883, -0.747167)
+script = ExtResource("1_rwmbp")
+WT = ExtResource("2_akkkd")
+
+[node name="WeaponMesh" type="MeshInstance3D" parent="."]
+mesh = ExtResource("3_saxmr")
+
+[node name="AnimPlayer" type="AnimationPlayer" parent="."]
+
+[node name="SoundPlayer" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("4_1uulv")
+
+[node name="WeaponAmmoText" type="RichTextLabel" parent="."]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
+offset_right = 40.0
+grow_vertical = 0
+text = "8/8"
+
+[node name="GunMuzzle" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0325817, -0.186126)
+
+[node name="DamageRay" type="Node3D" parent="." node_paths=PackedStringArray("SignalObjectNode")]
+script = ExtResource("5_6kllw")
+Damage = []
+Increment = true
+SignalObjectNode = NodePath("..")

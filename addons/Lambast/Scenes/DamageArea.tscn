@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://3n7lh2g6rfhb"]
+
+[ext_resource type="PackedScene" uid="uid://pm5mn0nc64wl" path="res://addons/Lambast/Scenes/DamageObject.tscn" id="1_xrktt"]
+[ext_resource type="Script" path="res://addons/Lambast/DamageArea.cs" id="2_6br6m"]
+
+[node name="DamageArea" instance=ExtResource("1_xrktt")]
+script = ExtResource("2_6br6m")
+AreaShape = null
+
+[node name="Area3D" type="Area3D" parent="." index="3"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" index="0"]
+
+[node name="AreaMeshInstance3D" type="MeshInstance3D" parent="." index="4"]
+skeleton = NodePath("../Area3D")
