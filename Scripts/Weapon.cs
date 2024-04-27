@@ -40,7 +40,7 @@ public partial class Weapon : Node3D, ISignalDamageObject
 		WeaponMesh = GetNode<MeshInstance3D>("WeaponMesh");
 		AnimPlayer = GetNode<AnimationPlayer>("AnimPlayer");
 		SoundPlayer = GetNode<AudioStreamPlayer3D>("SoundPlayer");
-		WeaponAmmoText = GetNode<RichTextLabel>("WeaponAmmoText");
+		WeaponAmmoText = GetNode<RichTextLabel>("Control/WeaponAmmoText");
 		GunMuzzle = GetNode<Node3D>("GunMuzzle");
 		Ray = GetNode<DamageRay>("DamageRay");
 		ReadyWeapon();

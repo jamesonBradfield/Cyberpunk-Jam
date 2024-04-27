@@ -18,11 +18,13 @@ namespace LambastNamespace
 
         public void SubscribeToDamageObject(DamageObject _DamageObject)
         {
+            GD.Print("Hurt Area subscribed to " + GD.VarToStr(_DamageObject));
             _DamageObject.DamageInstanceDone += SendDamageToHealthBar;
         }
 
         public void UnsubscribeToDamageObject(DamageObject _DamageObject)
         {
+            GD.Print("Hurt Area un-subscribed to " + GD.VarToStr(_DamageObject));
             _DamageObject.DamageInstanceDone -= SendDamageToHealthBar;
         }
 

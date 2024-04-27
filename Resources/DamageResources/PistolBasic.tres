@@ -6,4 +6,4 @@
 script = ExtResource("1_dvjc3")
 Type = ""
 DamageNumber = 25.0
-Cooldown = 0.125
+Cooldown = 1.0

@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://oxbxe1fii6x1"]
+[gd_scene load_steps=32 format=3 uid="uid://oxbxe1fii6x1"]
 
 [ext_resource type="Script" path="res://Scripts/Character.gd" id="1_1k0qf"]
 [ext_resource type="Script" path="res://Scripts/Weapon.cs" id="2_idpbv"]
@@ -6,6 +6,11 @@
 [ext_resource type="ArrayMesh" uid="uid://dm62dp4uvnbdj" path="res://Models/pistol.obj" id="4_ptc5u"]
 [ext_resource type="AudioStream" uid="uid://cgbi4ejvu8l2b" path="res://PlaceholderSfx/377145__nioczkus__pistol-draw-unholster.ogg" id="5_tjpah"]
 [ext_resource type="Script" path="res://addons/Lambast/DamageRay.cs" id="6_cjg45"]
+[ext_resource type="Script" path="res://Scripts/PlayerHealthController.cs" id="7_0eghi"]
+[ext_resource type="Script" path="res://addons/Lambast/HurtArea3D.cs" id="8_oaan6"]
+[ext_resource type="Script" path="res://addons/Lambast/DamageTimerExample.cs" id="9_v6a06"]
+[ext_resource type="Script" path="res://addons/Lambast/DamageResource.cs" id="10_iwve0"]
+[ext_resource type="Script" path="res://addons/Lambast/DamageArea.cs" id="11_g8nu0"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_pav4x"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -40,6 +45,63 @@ albedo_color = Color(0.258824, 0.372549, 1, 1)
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_vwdgw"]
 points = PackedVector3Array(-0.125207, -0.532801, -0.480507, 0.0227831, 0.47607, 0.498884, 0.169713, 0.559144, 0.464172, 0.231051, -0.803591, 0.320455, 0.40741, 0.651043, -0.243523, -0.482789, 0.594843, 0.0822132, -0.362868, -0.682312, 0.289697, 0.469044, -0.654529, -0.0662713, -0.127444, 0.842701, -0.338103, -0.393435, -0.683942, -0.244717, 0.438255, 0.623309, 0.200849, 0.0841477, 0.977454, 0.114795, -0.0682023, -0.976458, -0.12927, 0.20055, -0.563129, -0.451454, -0.185527, 0.595453, -0.453475, -0.273363, 0.592268, 0.407754, -0.00693649, -0.476823, 0.49966, 0.375821, -0.588614, 0.316955, 0.111579, 0.563059, -0.481177, -0.41725, 0.527866, -0.270497, -0.484546, -0.596972, -0.0665097, -0.279747, 0.908561, 0.0533361, -0.250197, -0.880712, 0.205319, 0.263647, -0.902771, -0.127394, 0.293368, 0.871526, -0.157196, 0.373412, -0.526319, -0.328246, 0.499663, 0.476641, -0.00688856, 0.0531056, 0.875001, 0.324703, -0.154543, -0.590854, 0.465879, -0.0972799, -0.782358, -0.398188, -0.387649, -0.498171, 0.31565, -0.30068, -0.587995, -0.388901)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oy8n5"]
+bg_color = Color(0.368627, 0.682353, 0.431373, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.258824, 0.380392, 0.239216, 1)
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+shadow_color = Color(0.14902, 0.14902, 0.14902, 0.8)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ukfv1"]
+bg_color = Color(0.882353, 0.380392, 0.2, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="Theme" id="Theme_fddbl"]
+ProgressBar/styles/background = SubResource("StyleBoxFlat_oy8n5")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_ukfv1")
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_d2ypf"]
+radius = 0.125
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_tuynh"]
+
+[sub_resource type="Resource" id="Resource_vr2xb"]
+script = ExtResource("10_iwve0")
+Type = ""
+DamageNumber = 20.0
+Cooldown = 3.0
+
+[sub_resource type="Resource" id="Resource_3vd6f"]
+script = ExtResource("10_iwve0")
+Type = ""
+DamageNumber = 20.0
+Cooldown = 3.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6n4cg"]
+size = Vector3(4, 4, 4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y8ubh"]
+transparency = 1
+albedo_color = Color(0.568627, 0.211765, 0.219608, 0.776471)
+
+[sub_resource type="BoxMesh" id="BoxMesh_oxf4f"]
+material = SubResource("StandardMaterial3D_y8ubh")
+size = Vector3(4, 4, 4)
+
 [node name="Test" type="Node3D"]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
@@ -52,52 +114,56 @@ environment = SubResource("Environment_6ocsn")
 [node name="CSGMesh3D" type="CSGMesh3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.101553, 0)
 use_collision = true
-collision_layer = 3
+collision_layer = 7
 mesh = SubResource("BoxMesh_2i8uj")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="CSGMesh3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.091, -25)
+layers = 7
 size = Vector3(50, 5, 1)
 material = SubResource("StandardMaterial3D_5oni5")
 
 [node name="CSGBox3D3" type="CSGBox3D" parent="CSGMesh3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.091, 25)
+layers = 7
 size = Vector3(50, 5, 1)
 material = SubResource("StandardMaterial3D_5oni5")
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="CSGMesh3D"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -25, 1.091, 0)
+layers = 7
 size = Vector3(50, 5, 1)
 material = SubResource("StandardMaterial3D_5oni5")
 
 [node name="CSGBox3D4" type="CSGBox3D" parent="CSGMesh3D"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 25, 1.091, 0)
+layers = 7
 size = Vector3(50, 5, 1)
 material = SubResource("StandardMaterial3D_5oni5")
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.672, 2.5, -6.893)
 use_collision = true
-collision_layer = 3
+collision_layer = 7
 size = Vector3(5.168, 1, 5.618)
 material = SubResource("StandardMaterial3D_2j1dk")
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.262, 1.5, -6.893)
 use_collision = true
-collision_layer = 3
+collision_layer = 7
 size = Vector3(5.168, 1, 5.618)
 material = SubResource("StandardMaterial3D_f3p4f")
 
 [node name="CSGBox3D3" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.535, 0.5, -6.893)
 use_collision = true
-collision_layer = 3
+collision_layer = 7
 size = Vector3(5.168, 1, 5.618)
 material = SubResource("StandardMaterial3D_ki22w")
 
 [node name="Character" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.14476, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.68534, 0)
 script = ExtResource("1_1k0qf")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Character"]
@@ -115,11 +181,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.463992, 0)
 target_position = Vector3(0, -1, -1000)
 collision_mask = 6
 
-[node name="WeaponBase" type="Node3D" parent="Character/Head/Camera3D" node_paths=PackedStringArray("HeadRaycast")]
+[node name="WeaponBase" type="Node3D" parent="Character/Head/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.483828, -0.14883, -0.747167)
 script = ExtResource("2_idpbv")
 WT = ExtResource("3_xe6uk")
-HeadRaycast = NodePath("../RayCast3D")
 
 [node name="WeaponMesh" type="MeshInstance3D" parent="Character/Head/Camera3D/WeaponBase"]
 mesh = ExtResource("4_ptc5u")
@@ -141,21 +206,22 @@ text = "8/8"
 [node name="GunMuzzle" type="Node3D" parent="Character/Head/Camera3D/WeaponBase"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0325817, -0.186126)
 
-[node name="DamageRay" type="Node3D" parent="Character/Head/Camera3D/WeaponBase" node_paths=PackedStringArray("SignalObjectNode")]
+[node name="Damage Ray" type="Node3D" parent="Character/Head/Camera3D/WeaponBase" node_paths=PackedStringArray("SignalObjectNode")]
 script = ExtResource("6_cjg45")
 Damage = []
-Increment = true
 SignalObjectNode = NodePath("..")
 
-[node name="Timer" type="Timer" parent="Character/Head/Camera3D/WeaponBase/DamageRay"]
+[node name="Timer" type="Timer" parent="Character/Head/Camera3D/WeaponBase/Damage Ray"]
 one_shot = true
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Character/Head/Camera3D/WeaponBase/DamageRay"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Character/Head/Camera3D/WeaponBase/Damage Ray"]
 
-[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="Character/Head/Camera3D/WeaponBase/DamageRay"]
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="Character/Head/Camera3D/WeaponBase/Damage Ray"]
 
-[node name="RayCast3D" type="RayCast3D" parent="Character/Head/Camera3D/WeaponBase/DamageRay"]
+[node name="RayCast3D" type="RayCast3D" parent="Character/Head/Camera3D/WeaponBase/Damage Ray"]
 target_position = Vector3(0, 0, -100)
+collide_with_areas = true
+collide_with_bodies = false
 
 [node name="Control" type="Control" parent="Character"]
 layout_mode = 3
@@ -167,15 +233,71 @@ grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="EnergyBar" type="ProgressBar" parent="Character/Control"]
+[node name="HealthBar" type="ProgressBar" parent="Character/Control" node_paths=PackedStringArray("HurtArea")]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 14.0
+offset_left = 33.0
 offset_top = -41.0
-offset_right = 214.0
+offset_right = 233.0
 offset_bottom = -14.0
 grow_vertical = 0
+theme = SubResource("Theme_fddbl")
 value = 100.0
 show_percentage = false
+script = ExtResource("7_0eghi")
+HurtArea = NodePath("../../HurtArea3D")
+
+[node name="Legs" type="Node3D" parent="Character"]
+visible = false
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Character/Legs"]
+transform = Transform3D(1, 0, 0, 0, 0.214735, -0.976672, 0, 0.976672, 0.214735, -0.316614, 0, -0.320867)
+mesh = SubResource("CapsuleMesh_d2ypf")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Character/Legs"]
+transform = Transform3D(1, 0, 0, 0, 0.213985, -0.976837, 0, 0.976837, 0.213985, 0.185598, 0, -0.372324)
+mesh = SubResource("CapsuleMesh_d2ypf")
+skeleton = NodePath("../..")
+
+[node name="HurtArea3D" type="Area3D" parent="Character"]
+monitoring = false
+script = ExtResource("8_oaan6")
+
+[node name="HurtAreaCollider" type="CollisionShape3D" parent="Character/HurtArea3D"]
+shape = SubResource("CapsuleShape3D_tuynh")
+
+[node name="DamageObjectExampleTimer" type="Node3D" parent="." node_paths=PackedStringArray("_DamageObject", "timer")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.74843, 6.20533)
+script = ExtResource("9_v6a06")
+damage = Array[Object]([SubResource("Resource_vr2xb")])
+_DamageObject = NodePath("DamageArea")
+timer = NodePath("Timer")
+
+[node name="DamageArea" type="Node3D" parent="DamageObjectExampleTimer" node_paths=PackedStringArray("SignalObjectNode")]
+script = ExtResource("11_g8nu0")
+Damage = [SubResource("Resource_3vd6f")]
+SignalObjectNode = NodePath("..")
+
+[node name="DamageArea" type="Area3D" parent="DamageObjectExampleTimer/DamageArea"]
+collision_layer = 5
+monitorable = false
+
+[node name="DamageShape" type="CollisionShape3D" parent="DamageObjectExampleTimer/DamageArea/DamageArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0285645, 0)
+shape = SubResource("BoxShape3D_6n4cg")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="DamageObjectExampleTimer/DamageArea"]
+mesh = SubResource("BoxMesh_oxf4f")
+
+[node name="Timer" type="Timer" parent="DamageObjectExampleTimer/DamageArea"]
+one_shot = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="DamageObjectExampleTimer/DamageArea"]
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="DamageObjectExampleTimer/DamageArea"]
+
+[node name="Timer" type="Timer" parent="DamageObjectExampleTimer"]
+autostart = true

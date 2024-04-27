@@ -39,10 +39,11 @@ namespace LambastNamespace
 		{
 			Utils.AddNodeAsChild<Timer>(ref CooldownTimer, "Timer", this);
 			CooldownTimer.OneShot = true;
-			CooldownTimer.Timeout += () => FlipFlop = false;
+			CooldownTimer.Timeout += () => FlipFlop = true;
 			Utils.AddNodeAsChild<AnimationPlayer>(ref DamageObjectAnimationPlayer, "AnimationPlayer", this);
 			Utils.AddNodeAsChild<AudioStreamPlayer3D>(ref DamageObjectAudioStreamPlayer3D, "AudioStreamPlayer3D", this);
 		}
+
 		public override void _ExitTree()
 		{
 			RemoveChild(CooldownTimer);
@@ -77,11 +78,20 @@ namespace LambastNamespace
 				}
 			}
 		}
+
+		public override void _Process(double delta)
+		{
+			base._Process(delta);
+			// GD.Print("DisableDamageObjectTimer " + GD.VarToStr(DisableDamageTimer));
+			// GD.Print("FlipFlop " + GD.VarToStr(FlipFlop));
+		}
+
 		protected virtual void StartDamageObjectTimer()
 		{
 			if (!CooldownTimer.IsStopped()) { return; }
-			if (Debug) { GD.Print("StartDamageObjectTimer called"); }
+			CooldownTimer.Start();
 		}
+
 		protected virtual void InitDamageObject(DamageResource[] _Damage)
 		{
 			Damage = _Damage;
@@ -91,6 +101,7 @@ namespace LambastNamespace
 				GD.Print("wait time set to " + GD.VarToStr(Damage[CurrentInstances].Cooldown) + " and an index of " + GD.VarToStr(CurrentInstances) + " with a damage of " + GD.VarToStr(Damage[CurrentInstances].DamageNumber));
 			}
 		}
+
 		protected virtual void DealDamage()
 		{
 			//NOTE: we have done a never-nester trick here if this signal seems to not work just know it could be this.
@@ -106,7 +117,6 @@ namespace LambastNamespace
 			else { CurrentInstances = Damage.Length; }
 			// CooldownTimer.Stop();
 			EmitSignal("DamageDone");
-
 		}
 	}
 }

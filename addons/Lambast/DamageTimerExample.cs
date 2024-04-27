@@ -10,7 +10,7 @@ public partial class DamageTimerExample : Node3D, ISignalDamageObject
     [Export]
     private DamageResource[] damage;
     [Export]
-    private DamageRay Ray;
+    private DamageObject _DamageObject;
     [Export]
     private Timer timer;
 
@@ -19,6 +19,7 @@ public partial class DamageTimerExample : Node3D, ISignalDamageObject
         InitDamageObject(damage);
         timer.Timeout += () =>
         {
+            GD.Print("damageTimerExample timer went off");
             DealDamageInstance();
         };
     }
