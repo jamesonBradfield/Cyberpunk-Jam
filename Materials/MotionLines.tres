@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://d3o6a1w4d8tha"]
+
+[ext_resource type="Shader" path="res://Shaders/MotionLines.gdshader" id="1_pq1tu"]
+
+[resource]
+shader = ExtResource("1_pq1tu")
+shader_parameter/speedScale = 16.0
+shader_parameter/clipPosition = 0.2
+shader_parameter/alpha = null

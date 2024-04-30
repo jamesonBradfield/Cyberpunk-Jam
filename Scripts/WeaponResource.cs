@@ -13,11 +13,17 @@ namespace LambastNamespace
         public Mesh WeaponMesh;
         [ExportCategory("Weapon Orientation")]
         [Export]
-        public Vector3 Position;
+        public Vector3 WeaponBasePosition;
         [Export]
-        public Vector3 Rotation;
+        public Vector3 WeaponMeshPosition;
+        [Export]
+        public Vector3 WeaponMeshRotation;
         [Export]
         public Vector3 GunMuzzle;
+        [Export]
+        public Vector3 RightHandPostition;
+        [Export]
+        public Vector3 RightHandRotation;
         [ExportCategory("Weapon Statistics")]
         [Export]
         public DamageResource[] Damage;

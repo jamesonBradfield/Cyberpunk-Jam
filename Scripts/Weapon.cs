@@ -32,17 +32,19 @@ public partial class Weapon : Node3D, ISignalDamageObject
 	private RichTextLabel WeaponAmmoText;
 	private Node3D GunMuzzle;
 	private DamageRay Ray;
-	[Export]
 	private RayCast3D HeadRaycast;
+	// [Export]
+	// private Node3D RightHandTarget;
 
 	public override void _Ready()
 	{
 		WeaponMesh = GetNode<MeshInstance3D>("WeaponMesh");
 		AnimPlayer = GetNode<AnimationPlayer>("AnimPlayer");
 		SoundPlayer = GetNode<AudioStreamPlayer3D>("SoundPlayer");
-		WeaponAmmoText = GetNode<RichTextLabel>("Control/WeaponAmmoText");
+		WeaponAmmoText = GetNode<RichTextLabel>("../../Control/WeaponAmmoText");
 		GunMuzzle = GetNode<Node3D>("GunMuzzle");
 		Ray = GetNode<DamageRay>("DamageRay");
+		HeadRaycast = GetNode<RayCast3D>("../RayCast3D");
 		ReadyWeapon();
 		InitDamageObject(wt.Damage);
 		Ray.DamageDone += () =>
@@ -92,8 +94,11 @@ public partial class Weapon : Node3D, ISignalDamageObject
 			if (wt.WeaponMesh != null)
 			{
 				WeaponMesh.Mesh = wt.WeaponMesh;
-				Position = wt.Position;
-				RotationDegrees = wt.Rotation;
+				Position = wt.WeaponBasePosition;
+				WeaponMesh.RotationDegrees = wt.WeaponMeshRotation;
+				WeaponMesh.Position = wt.WeaponMeshPosition;
+				// RightHandTarget.Position = wt.RightHandPostition;
+				// RightHandTarget.RotationDegrees = wt.RightHandRotation;
 			}
 		}
 	}

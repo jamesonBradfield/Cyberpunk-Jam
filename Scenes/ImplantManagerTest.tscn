@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://dg0snugrglgim"]
+
+[ext_resource type="Script" path="res://Scripts/Implant/ImplantManager.cs" id="1_ocb41"]
+
+[node name="ImplantManagerTest" type="Node3D"]
+
+[node name="ImplantManager" type="Node" parent="." node_paths=PackedStringArray("AvailableImplants", "CurrentImplant")]
+script = ExtResource("1_ocb41")
+AvailableImplants = [null, null, null]
+SelectedImplantIndexInAvailableImplants = null
+CurrentImplant = []
+DisabledAlbedoColor = null
+DisabledEmissionColor = null

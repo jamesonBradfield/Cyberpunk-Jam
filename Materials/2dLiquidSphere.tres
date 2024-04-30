@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://5l36iibu3krg"]
+
+[ext_resource type="Shader" path="res://Shaders/2dLiquidFillSphere.gdshader" id="1_37dfk"]
+
+[resource]
+shader = ExtResource("1_37dfk")
+shader_parameter/fV = 0.325
+shader_parameter/transform = Vector2(5, 5)

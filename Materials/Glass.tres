@@ -1,0 +1,14 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://cxony2h45vt0e"]
+
+[ext_resource type="Material" uid="uid://ol8qmau3glu4" path="res://Materials/LiquidInMesh.tres" id="1_7gd32"]
+[ext_resource type="Shader" path="res://Shaders/Glass.gdshader" id="2_lnj4e"]
+
+[resource]
+resource_local_to_scene = true
+render_priority = 0
+next_pass = ExtResource("1_7gd32")
+shader = ExtResource("2_lnj4e")
+shader_parameter/albedo = Color(1, 1, 1, 0)
+shader_parameter/roughness = 0.15
+shader_parameter/normal_strength = 1.0
+shader_parameter/edge_color = Color(0, 0, 0, 1)

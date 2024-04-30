@@ -1,33 +1,37 @@
 extends CharacterBody3D
 
-const WALK_SPEED = 5.0
-const SPRINT_SPEED = 8.0
-const SLIDE_SPEED= 10.0
-const CROUCH_SPEED = 3.0
-const JUMP_VELOCITY = 4.5
-const SENSITIVITY = 0.003
-const RUNNING_FRICTION = 7.0
-const AIR_FRICTION = 3.0
-
+@export_group("movement")
+@export var walk_speed : float = 5.0
+@export var sprint_speed : float = 8.0
+@export var slide_speed : float = 10.0
+@export var crouch_speed : float  = 3.0
+@export var jump_velocity : float  = 4.5
+@export var sensitivity : float  = 0.003
+@export var running_friction : float  = 7.0
+@export var air_friction : float  = 3.0
+@export_group("head bob")
 #bob variables
-const HEAD_BOB_FREQ = 2.0
-const BOB_AMP = 0.08
-var t_bob = 0.0
+@export var t_bob = 0.0
+@export var head_bob_freq : float = 2.0
+@export var head_bob_amp : float = 0.08
+@export var t_weapon_bob = 0.0
+@export var weapon_bob_freq : float = 2.0
+@export var weapon_bob_amp : float = 0.02
 
+@export_group("FOV")
 #fov variables
-const BASE_FOV = 75.0
-const SPRINT_FOV_CHANGE = 1.5
-const SLIDE_FOV_CHANGE = .75
-const FOV_LERP_DISTANCE_PER_FRAME = 8.0
+@export var base_fov : float = 75.0
+@export var sprint_fov_change : float = 1.5
+@export var slide_fov_change : float = .75
+@export var fov_lerp_distance_per_frame : float = 8.0
 
+@export_group("Other")
 #crouch\slide Variables
-const CROUCH_SCALE : Vector3 = Vector3(1,.75,1)
-const WALK_SCALE : Vector3 = Vector3(1,1,1)
+@export var crouch_scale : Vector3 = Vector3(1,.75,1)
+@export var walk_scale : Vector3 = Vector3(1,1,1)
+@export var motion_lines : ColorRect
 
-# Energy Drain variables.
-const SPRINT_ENERGY_DRAIN = 2.5
-
-var speed = WALK_SPEED
+@export var speed = walk_speed
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = 9.8
@@ -49,8 +53,8 @@ func _ready():
 
 func _input(event):
 	if event is InputEventMouseMotion:
-		head.rotate_y(-event.relative.x * SENSITIVITY)	
-		camera.rotate_x(-event.relative.y * SENSITIVITY)
+		head.rotate_y(-event.relative.x * sensitivity)	
+		camera.rotate_x(-event.relative.y * sensitivity)
 		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-40),deg_to_rad(60))
 
 
@@ -79,44 +83,50 @@ func _physics_process(delta):
 	velocity.y -= gravity * delta
 	match current_state:
 		state.JUMP:
-			velocity.y = JUMP_VELOCITY
+			velocity.y = jump_velocity
 		state.AIR:
-			velocity.x = lerp(velocity.x, direction.x * speed, delta * AIR_FRICTION)
-			velocity.z = lerp(velocity.z, direction.z * speed, delta * AIR_FRICTION)
+			velocity.x = lerp(velocity.x, direction.x * speed, delta * air_friction)
+			velocity.z = lerp(velocity.z, direction.z * speed, delta * air_friction)
 		state.WALK:
-			collider.scale = WALK_SCALE
-			speed = WALK_SPEED
+			collider.scale = walk_scale
+			speed = walk_speed
 		state.SPRINT:	
-			speed = SPRINT_SPEED
-			collider.scale = WALK_SCALE
+			speed = sprint_speed
+			collider.scale = walk_scale
 		state.CROUCH:	
-			collider.scale = CROUCH_SCALE
-			speed = CROUCH_SPEED
+			collider.scale = crouch_scale
+			speed = crouch_speed
 		state.SLIDE:
-			collider.scale = CROUCH_SCALE
-			speed = SLIDE_SPEED
+			collider.scale = crouch_scale
+			speed = slide_speed
 		state.IDLE:	
-			velocity.x = lerp(velocity.x, direction.x * speed, delta * RUNNING_FRICTION)
-			velocity.z = lerp(velocity.z, direction.z * speed, delta * RUNNING_FRICTION)
+			velocity.x = lerp(velocity.x, direction.x * speed, delta * running_friction)
+			velocity.z = lerp(velocity.z, direction.z * speed, delta * running_friction)
 	if current_state != state.CROUCH:	
 		t_bob += delta * velocity.length() * float(is_on_floor())
-		camera.transform.origin = _headbob(t_bob)
-		weapon_mesh.transform.origin = _headbob(t_bob)
+		t_weapon_bob += delta * velocity.length()
+		camera.transform.origin = _headbob(t_bob,head_bob_amp,head_bob_freq)
+		# weapon_mesh.transform.origin = _headbob(t_weapon_bob,weapon_bob_amp,weapon_bob_freq)
 	if current_state != state.IDLE:
 		velocity.x = direction.x * speed
 		velocity.z = direction.z * speed
 
 	#FOV
-	var velocity_clamped = clamp(velocity.length(), 0.5, SPRINT_SPEED * 2)
-	var target_fov = BASE_FOV + SPRINT_FOV_CHANGE * velocity_clamped
-	camera.fov = lerp(camera.fov,target_fov,delta * FOV_LERP_DISTANCE_PER_FRAME)
+	var velocity_clamped = clamp(velocity.length(), 0.5, sprint_speed * 2)
+	var target_fov = base_fov + sprint_fov_change * velocity_clamped
+	camera.fov = lerp(camera.fov,target_fov,delta * fov_lerp_distance_per_frame)
+
+	#motion lines
+	# print(clampf(velocity.length()-walk_speed,0,slide_speed * 2)/(slide_speed * 2)*4)
+	motion_lines.material.set_shader_parameter("alpha",clampf(velocity.length()-walk_speed,0,slide_speed * 2)/ (slide_speed * 2) * float(is_on_floor()))
+	motion_lines.material.set_shader_parameter("speedScale",clampf(velocity.length()-walk_speed,0,slide_speed * 2)/ (slide_speed * 2)*8 * float(is_on_floor())) 
 
 	move_and_slide()
 
-func _headbob(time) -> Vector3:
+func _headbob(time,bob_amp : float,bob_freq : float) -> Vector3:
 	var pos = Vector3.ZERO
-	pos.y = sin(time * HEAD_BOB_FREQ) * BOB_AMP
-	pos.x = cos(time * HEAD_BOB_FREQ/2) * BOB_AMP
+	pos.y = sin(time * bob_freq) * bob_amp
+	pos.x = cos(time * bob_freq/2) * bob_amp
 	return pos
 
 func is_moving() -> bool:
@@ -126,16 +136,16 @@ func change_state(new_state : state):
 	if new_state != current_state:
 		last_state = current_state
 		current_state = new_state
-		match current_state:
-			state.AIR:
-				print("state is AIR")
-			state.WALK:
-				print("state is WALK")
-			state.SPRINT:	
-				print("state is SPRINT")
-			state.CROUCH:	
-				print("state is CROUCH")
-			state.SLIDE:
-				print("state is SLIDE")
-			state.IDLE:	
-				print("state is IDLE")
+		# match current_state:
+		# 	state.AIR:
+		# 		print("state is AIR")
+		# 	state.WALK:
+		# 		print("state is WALK")
+		# 	state.SPRINT:	
+		# 		print("state is SPRINT")
+		# 	state.CROUCH:	
+		# 		print("state is CROUCH")
+		# 	state.SLIDE:
+		# 		print("state is SLIDE")
+		# 	state.IDLE:	
+		# 		print("state is IDLE")

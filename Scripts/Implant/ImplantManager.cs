@@ -12,14 +12,26 @@ public partial class ImplantManager : Node
 	[Export]
 	private Implant[] CurrentImplant = new Implant[2];
 	[Export]
-	private ProgressBar EnergyBar;
+	private TextureRect IconRect;
+	[Export]
+	private BarData EnergyBar;
+	[Export]
+	private Color DisabledAlbedoColor;
+	[Export]
+	private Color DisabledEmissionColor;
+	private MeshInstance3D ScreenMesh;
 
 	public override void _Ready()
 	{
+		ScreenMesh = GetNode<MeshInstance3D>("../Head/Camera3D/Arms/left_arm/Skeleton3D/BoneAttachment3D/Cube_002");
+		GD.Print(IconRect.Name);
 		foreach (Implant child in AvailableImplants)
 		{
 			child.ImplantReady();
 		}
+		SelectedImplant = AvailableImplants[0];
+		ScreenMesh.Call("set_icon_used", DisabledAlbedoColor, DisabledEmissionColor);
+		IconRect.Texture = SelectedImplant.Sprite;
 	}
 
 	public override void _Process(double delta)
@@ -32,50 +44,61 @@ public partial class ImplantManager : Node
 	{
 		for (int i = 0; i < CurrentImplant.Length; i++)
 		{
-			if (CurrentImplant[i] != null && CanDecrementEnergyBar(CurrentImplant[i].ProcessEnergyDrain))
+			if (CurrentImplant[i] != null && EnergyBar.CanDecrementBarData(CurrentImplant[i].ProcessEnergyDrain))
 			{
 				CurrentImplant[i].ImplantProcess(delta);
-				DecrementEnergyBar(CurrentImplant[i].ProcessEnergyDrain);
+				EnergyBar.DecrementBarData(CurrentImplant[i].ProcessEnergyDrain);
 			}
-			else if (CurrentImplant[i] != null && !CanDecrementEnergyBar(CurrentImplant[i].ProcessEnergyDrain))
+			else if (CurrentImplant[i] != null && !EnergyBar.CanDecrementBarData(CurrentImplant[i].ProcessEnergyDrain))
 			{
-				CurrentImplant[i].DeActivateImplant();
+				CurrentImplant[i].EmitSignal("DeActivateImplantSignal");
 				CurrentImplant[i] = null;
+				ScreenMesh.Call("set_icon_used", DisabledAlbedoColor, DisabledEmissionColor);
 			}
 		}
 	}
+
 	public override void _Input(InputEvent @event)
 	{
-		if (@event.IsActionPressed("implant_use") && CanDecrementEnergyBar(SelectedImplant.ActivateEnergyDrain + SelectedImplant.ProcessEnergyDrain))
+		if (@event.IsActionPressed("implant_use") && EnergyBar.CanDecrementBarData(SelectedImplant.ActivateEnergyDrain + SelectedImplant.ProcessEnergyDrain))
 		{
 			if (ImplantExistsInCurrentImplants(SelectedImplant))
 			{
-				GD.Print("Value " + GD.VarToStr(CurrentImplant[SelectedImplantIndexInAvailableImplants]) + " Index " + GD.VarToStr(SelectedImplantIndexInAvailableImplants) + " set to null");
-				CurrentImplant.SetValue(null, SelectedImplantIndexInAvailableImplants);
-				SelectedImplant.DeActivateImplant();
+				CurrentImplant[GetIndexGivenImplant(SelectedImplant)] = null;
+				SelectedImplant.EmitSignal("DeActivateImplantSignal");
+				ScreenMesh.Call("set_icon_used", DisabledAlbedoColor, DisabledEmissionColor);
 			}
 			else
 			{
-				DecrementEnergyBar(SelectedImplant.ActivateEnergyDrain);
-				CurrentImplant.SetValue(CurrentImplant.GetValue(0), 1);
+				EnergyBar.DecrementBarData(SelectedImplant.ActivateEnergyDrain);
+				if (CurrentImplant[0] != null)
+				{
+					CurrentImplant.SetValue(CurrentImplant.GetValue(0), 1);
+				}
 				CurrentImplant.SetValue(SelectedImplant, 0);
-				SelectedImplant.ActivateImplant();
+				SelectedImplant.EmitSignal("ActivateImplantSignal");
+				ScreenMesh.Call("set_icon_used", Colors.White, Colors.White);
 			}
 		}
 		if (@event.IsActionPressed("implant_next"))
 		{
 			SelectedImplantIndexInAvailableImplants += 1;
-			SelectedImplantOverflow();
-			SelectedImplant = (AvailableImplants[SelectedImplantIndexInAvailableImplants] as Implant);
-			GD.Print("Implant Selected : " + GD.VarToStr(SelectedImplant.Name));
+			SetIconAndColor();
 		}
 		if (@event.IsActionPressed("implant_prev"))
 		{
 			SelectedImplantIndexInAvailableImplants -= 1;
-			SelectedImplantOverflow();
-			SelectedImplant = (AvailableImplants[SelectedImplantIndexInAvailableImplants] as Implant);
-			GD.Print("Implant Selected : " + GD.VarToStr(SelectedImplant.Name));
+			SetIconAndColor();
 		}
+	}
+
+	private void SetIconAndColor()
+	{
+		SelectedImplantOverflow();
+		SelectedImplant = (AvailableImplants[SelectedImplantIndexInAvailableImplants] as Implant);
+		IconRect.Texture = SelectedImplant.Sprite;
+		if (SelectedImplant.IsActive) { ScreenMesh.Call("set_icon_used", Colors.White, Colors.White); }
+		else { ScreenMesh.Call("set_icon_used", DisabledAlbedoColor, DisabledEmissionColor); }
 	}
 
 	public void SelectedImplantOverflow()
@@ -90,23 +113,6 @@ public partial class ImplantManager : Node
 		}
 	}
 
-	public bool CanDecrementEnergyBar(float DecValue)
-	{
-		if (EnergyBar.Value - DecValue >= 0)
-		{
-			return true;
-		}
-		else
-		{
-			GD.Print("Can't Decrement Energy bar");
-			return false;
-		}
-	}
-	private void DecrementEnergyBar(float DecValue)
-	{
-		EnergyBar.Value -= DecValue;
-	}
-
 	private bool ImplantExistsInCurrentImplants(Implant checkImplant)
 	{
 		foreach (Implant CI in CurrentImplant)
@@ -115,6 +121,20 @@ public partial class ImplantManager : Node
 			else if (CI != checkImplant) { return false; }
 		}
 		return false;
+	}
+
+	private int GetIndexGivenImplant(Implant search)
+	{
+		for (int i = 0; i < CurrentImplant.Length; i++)
+		{
+			if (search == CurrentImplant[i])
+			{
+				return i;
+			}
+			GD.Print("Something is very wrong. your CurrentIndex is somehow acting cray cray!");
+			return 3;
+		}
+		return 4;
 	}
 }
 

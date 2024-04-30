@@ -4,16 +4,20 @@
 [ext_resource type="Resource" uid="uid://clka464tbngdj" path="res://Resources/DamageResources/PistolBasic.tres" id="2_o51ja"]
 [ext_resource type="Resource" uid="uid://cx0mi2cma5mt5" path="res://Resources/Feedbacks/Reload_Feedback.tres" id="3_tc1q0"]
 [ext_resource type="Resource" uid="uid://c6ja8871q6oe" path="res://Resources/Feedbacks/Shooting_feedback.tres" id="4_hmt3p"]
-[ext_resource type="ArrayMesh" uid="uid://dm62dp4uvnbdj" path="res://Models/pistol.obj" id="5_y8qm2"]
+[ext_resource type="ArrayMesh" uid="uid://p208i4ikxe4n" path="res://Scenes/Gun.tres" id="5_ioa6o"]
 [ext_resource type="Script" path="res://Scripts/WeaponResource.cs" id="6_cprbt"]
 
 [resource]
+resource_local_to_scene = true
 script = ExtResource("6_cprbt")
 WeaponName = &"Pistol"
-WeaponMesh = ExtResource("5_y8qm2")
-Position = Vector3(0.483828, -0.14883, -0.747167)
-Rotation = Vector3(0, 0, 0)
-GunMuzzle = Vector3(0, 0.0325817, -0.186126)
+WeaponMesh = ExtResource("5_ioa6o")
+WeaponBasePosition = Vector3(0.268198, -0.110764, -0.787447)
+WeaponMeshPosition = Vector3(0, -0.0895762, 0.189514)
+WeaponMeshRotation = Vector3(0, 90, 0)
+GunMuzzle = Vector3(0, 0.0325818, 0.0517492)
+RightHandPostition = Vector3(1.58019, 0.0488321, -4.66379)
+RightHandRotation = Vector3(1.38222, -0.198804, -2.06006)
 Damage = [ExtResource("2_o51ja"), ExtResource("2_o51ja"), ExtResource("2_o51ja"), ExtResource("2_o51ja"), ExtResource("2_o51ja"), ExtResource("2_o51ja"), ExtResource("2_o51ja"), ExtResource("2_o51ja")]
 IsSemiAuto = true
 SprayRandomness = Vector2(0, 0)

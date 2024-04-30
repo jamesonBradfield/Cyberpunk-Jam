@@ -1,0 +1,64 @@
+[gd_scene load_steps=4 format=3 uid="uid://dneeaxcha8pcf"]
+
+[ext_resource type="Shader" path="res://Shaders/CRTVHS.gdshader" id="1_p45vq"]
+[ext_resource type="Texture2D" uid="uid://br1hypbqj6kqg" path="res://Sprites/shield-svgrepo-com.png" id="2_ntb3k"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hhx8l"]
+shader = ExtResource("1_p45vq")
+shader_parameter/overlay = true
+shader_parameter/scanlines_opacity = 0.01
+shader_parameter/scanlines_width = 0.5
+shader_parameter/grille_opacity = 0.1
+shader_parameter/resolution = Vector2(640, 480)
+shader_parameter/pixelate = false
+shader_parameter/roll = true
+shader_parameter/roll_speed = 2.265
+shader_parameter/roll_size = 5.288
+shader_parameter/roll_variation = 1.851
+shader_parameter/distort_intensity = 0.095
+shader_parameter/noise_opacity = 1.0
+shader_parameter/noise_speed = 10.81
+shader_parameter/static_noise_intensity = 0.298
+shader_parameter/aberration = 0.273
+shader_parameter/brightness = 1.54
+shader_parameter/discolor = true
+shader_parameter/warp_amount = 5.0
+shader_parameter/clip_warp = false
+shader_parameter/vignette_intensity = 1.72
+shader_parameter/vignette_opacity = 0.261
+
+[node name="SubViewport" type="SubViewport"]
+disable_3d = true
+transparent_bg = true
+size = Vector2i(900, 900)
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CrtScreen" type="ColorRect" parent="Control"]
+material = SubResource("ShaderMaterial_hhx8l")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Icon" type="TextureRect" parent="Control"]
+z_index = -1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_ntb3k")
+expand_mode = 1
+stretch_mode = 3

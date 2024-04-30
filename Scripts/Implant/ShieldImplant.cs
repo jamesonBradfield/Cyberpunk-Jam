@@ -3,12 +3,12 @@ using System;
 
 public partial class ShieldImplant : Implant
 {
-    public override void ActivateImplant()
+    protected override void ActivateImplant()
     {
         base.ActivateImplant();
     }
 
-    public override void DeActivateImplant()
+    protected override void DeActivateImplant()
     {
         base.DeActivateImplant();
     }
