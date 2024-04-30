@@ -10,6 +10,14 @@ namespace LambastNamespace
         {
             base._EnterTree();
             Utils.AddNodeAsChild<RayCast3D>(ref Ray, "RayCast3D", this);
+            Ray = this.GetNode<RayCast3D>("RayCast3D");
+            if (Ray == null)
+            {
+                Ray = new();
+                this.AddChild(Ray);
+                Ray.Name = "RayCast3D";
+                Ray.Owner = Ray.GetTree().EditedSceneRoot;
+            }
             Ray.TargetPosition = Vector3.Forward * 100;
             Ray.CollideWithBodies = false;
             Ray.CollideWithAreas = true;

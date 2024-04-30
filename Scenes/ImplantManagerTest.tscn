@@ -7,7 +7,4 @@
 [node name="ImplantManager" type="Node" parent="." node_paths=PackedStringArray("AvailableImplants", "CurrentImplant")]
 script = ExtResource("1_ocb41")
 AvailableImplants = [null, null, null]
-SelectedImplantIndexInAvailableImplants = null
 CurrentImplant = []
-DisabledAlbedoColor = null
-DisabledEmissionColor = null

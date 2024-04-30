@@ -9,7 +9,13 @@ public partial class BarData : Node
     public float MaxValue { get; set; }
     [Export]
     public float MinValue { get; set; }
-
+    [ExportGroup("Graphics")]
+    [Export]
+    public float GraphicMinValue;
+    [Export]
+    public float GraphicMaxValue;
+    [Export]
+    public MeshInstance3D Graphic;
     public bool CanDecrementBarData(float DecValue)
     {
         if (Value - DecValue >= 0)
@@ -25,6 +31,11 @@ public partial class BarData : Node
     public void DecrementBarData(float DecValue)
     {
         Value -= DecValue;
+    }
+
+    public float GetValueAsClamp01()
+    {
+        return Mathf.Clamp(Value, MinValue, MaxValue) / MaxValue;
     }
 
 }

@@ -24,7 +24,7 @@ project/assembly_name="Cyberpunk Jam"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/Lambast/plugin.cfg", "res://addons/godot_vim/plugin.cfg", "res://addons/radial_progress/plugin.cfg")
+enabled=PackedStringArray("res://addons/Lambast/plugin.cfg", "res://addons/godot_vim/plugin.cfg")
 
 [input]
 

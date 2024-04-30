@@ -11,3 +11,7 @@ func _ready() -> void:
 func set_icon_used(albedo_color : Color,emission_color : Color) -> void:
 	get_active_material(0).next_pass.next_pass.albedo_color = albedo_color 
 	get_active_material(0).next_pass.next_pass.emission_color = emission_color 
+
+
+func _on_progress_bar_value_changed(value):
+	pass # Replace with function body.
